@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            height: 100%;
+            background-color: #E0F2FE; /* Main background color */
+            color: #60A5FA; /* Text color */
+        }
+        nav {
+            background-color: #84CC16; /* Navbar background color */
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            padding: 20px 25px; /* Smaller padding to reduce navbar size */
+        }
+        .navbar-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .main-container {
+            margin-top: 100px; /* Ensure content is not covered by the navbar */
+        }
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #FFFFFF; /* Container background color */
+            color: #60A5FA; /* Text color for containers */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2rem;
+            color: #60A5FA; /* Text color */
+        }
+        .header a {
+            background-color: #E0F2FE; /* Button background color */
+            color: #84CC16; /* Button text color */
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: background-color 0.3s ease;
+        }
+        .header a:hover {
+            background-color: #E0F2FE; /* Light gray hover background */
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <nav>
+        <div class="navbar-container">
+            <h1 class="text-white text-4xl font-bold">Care Bear</h1>
+            <div>
+                <a href="{{ url_for('login') }}" class="bg-sky-100 text-lime-500 py-2 px-4 rounded mx-1 hover:bg-sky-100">Iniciar Sesión</a>
+                <a href="{{ url_for('register') }}" class="bg-sky-100 text-lime-500 py-2 px-4 rounded mx-1 hover:bg-sky-100">Registrarse</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="container my-8 p-6">
+            <h1 class="text-2xl font-bold mb-4">Login</h1>
+            <form method="POST" action="{{ url_for('login') }}">
+                {{ form.hidden_tag() }}
+                <div class="mb-4">
+                    {{ form.email.label(class_="block text-blue-300") }}
+                    {{ form.email(class_="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500") }}
+                </div>
+                <div class="mb-4">
+                    {{ form.password.label(class_="block text-blue-300") }}
+                    {{ form.password(class_="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500") }}
+                </div>
+                <button type="submit" class="w-full py-2 px-4 text-white rounded-md bg-lime-500 hover:bg-green-600 focus:outline-none">Login</button>
+            </form>
+            <p class="mt-4 text-sm">Don't have an account? <a href="{{ url_for('register') }}" style="color: #84CC16;">Register</a></p>
+        </div>
+    </div>
+</body>
+</html>

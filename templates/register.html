@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            height: 100%;
+            background-color: #E0F2FE; /* Main background color */
+            color: #60A5FA; /* Text color */
+        }
+        nav {
+            background-color: #84CC16; /* Navbar background color */
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            padding: 20px 25px; /* Smaller padding to reduce navbar size */
+        }
+        .navbar-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .main-container {
+            margin-top: 100px; /* Ensure content is not covered by the navbar */
+        }
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #FFFFFF; /* Container background color */
+            color: #60A5FA; /* Text color for containers */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2rem;
+            color: #60A5FA; /* Text color */
+        }
+        .header a {
+            background-color: #E0F2FE; /* Button background color */
+            color: #84CC16; /* Button text color */
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: background-color 0.3s ease;
+        }
+        .header a:hover {
+            background-color: #E0F2FE; /* Light gray hover background */
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const userTypeField = document.getElementById('user_type');
+            const patientFields = document.getElementById('patient_fields');
+            const doctorFields = document.getElementById('doctor_fields');
+            const form = document.querySelector('form');
+            const patientIdInput = document.getElementById('patient_id');
+            const doctorIdInput = document.getElementById('doctor_id');
+
+            userTypeField.addEventListener('change', function () {
+                if (this.value === 'patient') {
+                    patientFields.classList.remove('hidden');
+                    doctorFields.classList.add('hidden');
+                } else if (this.value === 'doctor') {
+                    patientFields.classList.add('hidden');
+                    doctorFields.classList.remove('hidden');
+                } else {
+                    patientFields.classList.add('hidden');
+                    doctorFields.classList.add('hidden');
+                }
+            });
+
+            // Trigger change event to set initial visibility
+            userTypeField.dispatchEvent(new Event('change'));
+
+            form.addEventListener('submit', function (event) {
+                if (userTypeField.value === 'patient' && !isValidId(patientIdInput.value)) {
+                    event.preventDefault();
+                    alert('Please enter a valid Patient ID.');
+                } else if (userTypeField.value === 'doctor' && !isValidId(doctorIdInput.value)) {
+                    event.preventDefault();
+                    alert('Please enter a valid Doctor ID.');
+                }
+            });
+
+            function isValidId(id) {
+                // Example validation: numeric, longer than 5 digits, not a stream of 0s
+                const idPattern = /^[1-9][0-9]{5,}$/;
+                return idPattern.test(id);
+            }
+        });
+    </script>
+</head>
+<body class="font-sans bg-sky-100">
+    <nav class="bg-lime-500 p-4">
+        <div class="navbar-container">
+            <h1 class="text-white text-3xl font-bold">Care Bear</h1>
+            <div>
+                <a href="{{ url_for('login') }}" class="bg-sky-100 text-lime-500 py-2 px-4 rounded mx-1 hover:bg-sky-100">Iniciar Sesión</a>
+                <a href="{{ url_for('register') }}" class="bg-sky-100 text-lime-500 py-2 px-4 rounded mx-1 hover:bg-sky-100">Registrarse</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-md mx-auto p-6 bg-white rounded-md shadow-md my-8">
+        <h1 class="text-2xl font-bold mb-4">Register</h1>
+        <form method="POST" action="{{ url_for('register') }}">
+            {{ form.hidden_tag() }}
+            <div class="mb-4">
+                {{ form.username.label(class_="block text-blue-300") }}
+                {{ form.username(class_="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500") }}
+            </div>
+            <div class="mb-4">
+                {{ form.email.label(class_="block text-blue-300") }}
+                {{ form.email(class_="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500") }}
+            </div>
+            <div class="mb-4">
+                {{ form.password.label(class_="block text-blue-300") }}
+                {{ form.password(class_="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500") }}
+            </div>
+            <div class="mb-4">
+                {{ form.confirm_password.label(class_="block text-blue-300") }}
+                {{ form.confirm_password(class_="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500") }}
+            </div>
+            <div class="mb-4">
+                {{ form.user_type.label(class_="block text-blue-300") }}
+                {{ form.user_type(class_="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500") }}
+            </div>
+            <div id="patient_fields" class="mb-4 hidden">
+                <div class="mb-4">
+                    <label for="patient_id" class="block text-blue-300">Patient ID</label>
+                    <input type="text" id="patient_id" name="patient_id" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500">
+                </div>
+            </div>
+            <div id="doctor_fields" class="mb-4 hidden">
+                <div class="mb-4">
+                    <label for="doctor_id" class="block text-blue-300">Doctor ID</label>
+                    <input type="text" id="doctor_id" name="doctor_id" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500">
+                </div>
+                <div class="mb-4">
+                    {{ form.medical_credentials.label(class_="block text-blue-300") }}
+                    {{ form.medical_credentials(class_="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500") }}
+                </div>
+            </div>
+            <button type="submit" class="w-full py-2 px-4 bg-lime-500 text-sky-100 rounded-md hover:bg-green-600 focus:outline-none">Register</button>
+        </form>
+        <p class="mt-4 text-sm">Already have an account? <a href="{{ url_for('login') }}" class="text-lime-500">Login</a></p>
+    </div>
+</body>
+</html>
